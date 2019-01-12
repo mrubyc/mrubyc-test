@@ -35,8 +35,28 @@ Or install it yourself as:
 ## Usage
 
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
-
 This means you have `.mrubycconfig` file in your top directory.
+
+Besides, you have to locate mruby model files that are the target of testing at `mrblib/models/class_name.rb`
+
+This is an example of ESP32 project:
+
+```
+~/your_project $ tree
+.
+├── Makefile
+├── build
+├── components
+├── main
+├── mrblib
+│   ├── job_main_loop.rb     # Loop script can't be tested by mrubyc-test
+│   └── models
+│         ├── class_name.rb  # These are the testing targets
+│         └── my_class.rb    # These are the testing targets
+├── partitions.csv
+├── sdkconfig
+└── sdkconfig.old
+```
 
 In the same directory:
 
