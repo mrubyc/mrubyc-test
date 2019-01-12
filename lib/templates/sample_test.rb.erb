@@ -1,0 +1,55 @@
+# frozen_string_literal: true
+
+# This is an example of test script
+
+# The name of test class should correspond to its `filename.camelize`
+# WhateverTest class have to inherit some requirements from MrubycTestCase class
+class SampleTest < MrubycTestCase
+
+  # setup() will be invoked before each test case
+  def setup
+    @string = 'Ruby is nice'
+  end
+
+  # teardown() will be invoked before each test case
+  def teardown
+    # for some technical reasons, it is recommended to reset instance variables by your self
+    @string = nil
+  end
+
+  # you can and should write some description at just before test case
+#  description 'replacememt method of String class'
+  def string_tr_case
+    @string.tr!('i', 'a')
+    assert_equal 'Ruby as nace', @string
+  end
+
+  # in order to make the cases below success, you should locate `mrblib/models/sample.rb` as this:
+  #
+  # class Sample
+  #   attr_accessor :result
+  #   def do_something(arg)
+  #     @result = arg + still_not_defined_method
+  #   end
+  #   def do_other_thing
+  #     is_to_be_hit()
+  #   end
+  # end
+
+  # desc is an alias of description
+  desc 'stub test sample'
+  def stub_case
+    sample_obj = Sample.new
+    stub(sample_obj).still_not_defined_method { ", so we are nice" }
+    sample_obj.do_something(@string)
+    assert_equal 'Ruby is nice, so we are nice', sample_obj.result
+  end
+
+  desc 'mock test sample'
+  def mock_case
+    sample_obj = Sample.new
+    mock(sample_obj).is_to_be_hit
+    sample_obj.do_other_thing
+  end
+
+end

@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "thor", "~> 0.20"
   spec.add_dependency "activesupport", "~> 5.2"
+  spec.add_dependency "rufo", "~> 0.4"
 end

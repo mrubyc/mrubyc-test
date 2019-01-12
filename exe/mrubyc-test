@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'mrubyc-test'
+
+Mrubyc::Test::Tool.start
+

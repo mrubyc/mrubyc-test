@@ -1,8 +1,20 @@
-# Mrubyc::Test
+# mrubyc-test
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/mrubyc/test`. To experiment with that code, run `bin/console` for an interactive prompt.
+mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 
-TODO: Delete this and the text above, and describe your gem
+Note that it's still experimental version.
+
+## Acknowledgements
+
+The API design and implementation of this gem is greatly inspired by [test-unit](https://github.com/test-unit/test-unit). Thank the great work.
+
+## Features
+
+- Tests are applicable to mruby code. C code will not be covered
+- Simple assertions ... enough for almost firmware development though, I will increase the number of assertion
+- Stub ... You can write your mruby code without peripheral implementation by C
+- Mock ... You can call any method sill doesn't exist
+- The implementation of your application and test code will be analyzed by CRuby program, then comlpiled into mruby byte code and executed on mruby/c VM
 
 ## Installation
 
@@ -22,7 +34,33 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
+
+This means you have `.mrubycconfig` file in your top directory.
+
+In the same directory:
+
+    $ mrubyc-test init
+
+Then, some directories and files will be created in your project.
+Now you can run test because a sample test code was also created.
+
+    $ mrubyc-test test
+
+You should get some assertion faulures.
+Take a look at `test/sample_test.rb` to handle the failures and know how to write your own test.
+
+## Known problems
+
+- `.ruby-version` should be set to a veriosn of CRuby to use mrubyc-test command although mruby/c developers want to set it like mruby-1.4.1
+- You have to write stub or mock test fot all the methods still do not exist otherwise your test won't turn green
+
+## TODO (possibly)
+
+- Better solution of coexistence of CRuby and mruby. May be a kind of wrapper tool or rbenv plugin?
+- Assertion against arguments of mock
+- Other assertions like LT(<), GTE(>=), include?, ...etc.
+- bla bla bla
 
 ## Development
 
@@ -32,7 +70,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/mrubyc-test. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hasumikin/mrubyc-test. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
