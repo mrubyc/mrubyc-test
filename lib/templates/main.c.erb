@@ -1,7 +1,7 @@
-#include "mrubyc_src/mrubyc.h"
+#include "mrubyc.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "src/job_test.c"
+#include "test.c"
 
 #define MEMORY_SIZE (1024*63)
 static uint8_t my_memory_pool[MEMORY_SIZE];
@@ -33,7 +33,7 @@ int main(void) {
   mrbc_init(my_memory_pool, MEMORY_SIZE);
   mrbc_define_method(0, mrbc_class_object, "debugprint", c_debugprint);
   mrbc_define_method(0, mrbc_class_object, "exit", c_exit);
-  mrbc_create_task( job_test, 0 );
+  mrbc_create_task( test, 0 );
   mrbc_run();
   return exit_code;
 }

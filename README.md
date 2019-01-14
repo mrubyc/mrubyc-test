@@ -37,25 +37,26 @@ Or install it yourself as:
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
 This means you have `.mrubycconfig` file in your top directory.
 
-Besides, you have to locate mruby model files that are the target of testing at `mrblib/models/class_name.rb`
+Besides, you have to locate mruby model files that are the target of testing like `mrblib/models/class_name.rb`
 
 This is an example of ESP32 project:
 
 ```
 ~/your_project $ tree
 .
+├── .mrubycconfig                # Created by mrubyc-utils
 ├── Makefile
 ├── build
 ├── components
 ├── main
 ├── mrblib
-│   ├── job_main_loop.rb     # Loop script can't be tested by mrubyc-test
-│   └── models
-│         ├── class_name.rb  # These are the testing targets
-│         └── my_class.rb    # These are the testing targets
-├── partitions.csv
-├── sdkconfig
-└── sdkconfig.old
+│      └── models               # Place your model class files here
+│            ├── class_name.rb  # The testing target `ClassName`
+│            └── my_class.rb    # The testing target `MyClass`
+│      └── tasks
+│            ├── main.rb        # Loop script isn't covered by mrubyc-test. use mrubyc-debugger
+│            └── sub.rb         # Loop script isn't covered by mrubyc-test. use mrubyc-debugger
+└── sdkconfig
 ```
 
 In the same directory:
@@ -69,6 +70,65 @@ Now you can run test because a sample test code was also created.
 
 You should get some assertion faulures.
 Take a look at `test/sample_test.rb` to handle the failures and know how to write your own test.
+
+### Asserions
+
+```ruby
+def assertions
+  my_var = 1
+  assert_equal     1, my_var  # => success
+  assert_not_equal 2, my_var  # => success
+  assert_not_nil   my_var     # => success
+end
+```
+
+### Stubs
+
+Assuming you have a model file at `mrblib/models/sample.rb`
+
+```ruby
+class Sample
+  def do_something
+    attr_accessor :result
+    def do_something(arg)
+      @result = arg + still_not_defined_method
+    end
+  end
+end
+```
+
+Then you can test `#do_something` method without having `#still_not_defind_method` like this:
+
+```ruby
+def stub_case
+  sample_obj = Sample.new
+  stub(sample_obj).still_not_defined_method { ", so we are nice" }
+  sample_obj.do_something("Ruby is nice")
+  assert_equal 'Ruby is nice, so we are nice', sample_obj.result
+end
+```
+
+### Mocks
+
+`mrblib/models/sample.rb` looks like this time:
+
+```ruby
+class Sample
+  def do_other_thing
+    is_to_be_hit()
+  end
+end
+```
+
+You can test whether `#is_to_be_hit` method will be called:
+
+```ruby
+def mock_case
+  sample_obj = Sample.new
+  mock(sample_obj).is_to_be_hit
+  sample_obj.do_other_thing
+end
+```
 
 ## Known problems
 

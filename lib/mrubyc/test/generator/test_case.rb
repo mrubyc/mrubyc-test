@@ -9,8 +9,10 @@ module Mrubyc
             test_cases = []
             attributes[:method_locations].each do |klass, methods|
               methods.each do |method|
-                found_desc = attributes[:description_locations][klass].find do |hash|
-                  hash[:line] == method[:line] -1
+                if attributes[:description_locations].size > 0
+                  found_desc = attributes[:description_locations][klass].find do |hash|
+                    hash[:line] == method[:line] -1
+                  end
                 end
                 description = found_desc ? found_desc[:text] : ''
                 information = {

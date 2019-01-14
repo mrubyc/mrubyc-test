@@ -18,38 +18,38 @@ class SampleTest < MrubycTestCase
   end
 
   # you can and should write some description at just before test case
-#  description 'replacememt method of String class'
+  description 'replacememt method of String class'
   def string_tr_case
     @string.tr!('i', 'a')
     assert_equal 'Ruby as nace', @string
   end
 
-  # in order to make the cases below success, you should locate `mrblib/models/sample.rb` as this:
-  #
-  # class Sample
-  #   attr_accessor :result
-  #   def do_something(arg)
-  #     @result = arg + still_not_defined_method
-  #   end
-  #   def do_other_thing
-  #     is_to_be_hit()
-  #   end
-  # end
-
-  # desc is an alias of description
-  desc 'stub test sample'
-  def stub_case
-    sample_obj = Sample.new
-    stub(sample_obj).still_not_defined_method { ", so we are nice" }
-    sample_obj.do_something(@string)
-    assert_equal 'Ruby is nice, so we are nice', sample_obj.result
-  end
-
-  desc 'mock test sample'
-  def mock_case
-    sample_obj = Sample.new
-    mock(sample_obj).is_to_be_hit
-    sample_obj.do_other_thing
-  end
+#  # in order to make the cases below success, you should locate `mrblib/models/sample.rb` as this:
+#  #
+#  # class Sample
+#  #   attr_accessor :result
+#  #   def do_something(arg)
+#  #     @result = arg + still_not_defined_method
+#  #   end
+#  #   def do_other_thing
+#  #     is_to_be_hit()
+#  #   end
+#  # end
+#
+#  # desc is an alias of description
+#  desc 'stub test sample'
+#  def stub_case
+#    sample_obj = Sample.new
+#    stub(sample_obj).still_not_defined_method { ", so we are nice" }
+#    sample_obj.do_something(@string)
+#    assert_equal 'Ruby is nice, so we are nice', sample_obj.result
+#  end
+#
+#  desc 'mock test sample'
+#  def mock_case
+#    sample_obj = Sample.new
+#    mock(sample_obj).is_to_be_hit
+#    sample_obj.do_other_thing
+#  end
 
 end
