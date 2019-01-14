@@ -2,8 +2,6 @@
 
 mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 
-Note that it's still experimental version.
-
 ## Acknowledgements
 
 The API design and implementation of this gem is greatly inspired by [test-unit](https://github.com/test-unit/test-unit). Thank the great work.
