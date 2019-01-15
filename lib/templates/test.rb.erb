@@ -28,7 +28,7 @@ debugprint(RUBY_DESCRIPTION)
 $success_count = 0
 $failure_count = 0
 $colors = {
-  normal: "\e[37m",
+  reset: "\e[0m",
   success: "\e[32m",
   failure: "\e[31m"
 }
@@ -37,7 +37,7 @@ def summerize
   print ($failure_count > 0) ? $colors[:failure] : $colors[:success]
   print ($success_count + $failure_count).to_s + ' examples, '
   print $failure_count.to_s + ' failures'
-  print $colors[:normal]
+  print $colors[:reset]
   puts
   ($failure_count > 0) ? 1 : 0
 end

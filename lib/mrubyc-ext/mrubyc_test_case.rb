@@ -13,10 +13,10 @@ class MrubycTestCase
     puts_information
     $success_count += 1
     if @puts_success_message
-      puts $colors[:success] + '  assertion : ' + assertion.to_s + $colors[:normal]
-      puts $colors[:success] + '  result    : ' + actual.to_ss + $colors[:normal]
+      puts $colors[:success] + '  assertion : ' + assertion.to_s + $colors[:reset]
+      puts $colors[:success] + '  result    : ' + actual.to_ss + $colors[:reset]
     else
-      print $colors[:success] + '.' + $colors[:normal]
+      print $colors[:success] + '.' + $colors[:reset]
     end
   end
   def failure(assertion, expected, actual, message)
@@ -27,11 +27,11 @@ class MrubycTestCase
       puts $colors[:failure] + '  line       : ' + @information[:line].to_s
       puts $colors[:failure] + '  description: ' + @information[:description].to_s
       puts $colors[:failure] + '  ' + message if message
-      puts $colors[:failure] + '  assertion  : ' + assertion.to_s + $colors[:normal]
-      puts $colors[:failure] + '  expected   : ' + expected.to_ss + $colors[:normal]
-      puts $colors[:failure] + '  actual     : ' + actual.to_ss + $colors[:normal]
+      puts $colors[:failure] + '  assertion  : ' + assertion.to_s + $colors[:reset]
+      puts $colors[:failure] + '  expected   : ' + expected.to_ss + $colors[:reset]
+      puts $colors[:failure] + '  actual     : ' + actual.to_ss + $colors[:reset]
     else
-      print $colors[:failure] + '.' + $colors[:normal]
+      print $colors[:failure] + '.' + $colors[:reset]
     end
   end
   def assert_equal(expected, actual, message = nil)
