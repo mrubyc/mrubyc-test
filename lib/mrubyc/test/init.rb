@@ -43,12 +43,12 @@ module Mrubyc
           File.write(File.join(config['test_tmp_dir'], 'main.c'), erb.result(binding))
 
           puts
-          puts "\e[32mWelcome to mrubyc-test, the world\'s first TDD tool for mruby/c microcontroller development.\e[37m"
+          puts "\e[32mWelcome to mrubyc-test, the world\'s first TDD tool for mruby/c microcontroller development.\e[0m"
           puts "\e[33m"
-          puts 'Caution:'
-          puts 'For the time being, mrubyc-test assumes you installed mruby-1.4.1 by rbenv. So you should have `~/.rbenv/versions/mruby-1.4.1/bin.mrbc`'
-          puts 'Sorry for the inconvenience. It will be fixed soon!'
-          puts "\e[37m"
+          puts 'Note:'
+          puts 'It is recommended to use mrubyc-utils as a wrapper of this gem'
+          puts 'see https://github.com/hasumikin/mrubyc-utils#wrapper-of-gem-mrubyc-test-and-mrubyc-debugger'
+          puts "\e[0m"
         end
       end
     end

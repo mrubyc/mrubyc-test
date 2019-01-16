@@ -14,6 +14,8 @@ module Mrubyc::Test
   class Error < StandardError; end
 
   class Tool < Thor
+    default_command :test
+
     desc 'init', 'Initialize requirements for unit test of mruby/c. Some directories and files will be created. Note that existing objects may be overridden'
     def init
       Mrubyc::Test::Init.run
@@ -49,11 +51,18 @@ module Mrubyc::Test
       puts
       exit_code = 0
       pwd = Dir.pwd
+      mruby_version = File.read('.ruby-version').gsub("\n", '').chomp
+      unless mruby_version.index('mruby')
+        puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use https://github.com/hasumikin/mrubyc-utils v0.0.6+`'
+        print 'Version name of mruby [mruby-x.x.x]: '
+        mruby_version = STDIN.gets.chomp
+      end
       FileUtils.mv "#{pwd}/#{config['mrubyc_src_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
       begin
         FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         Dir.chdir(tmp_dir) do
-          ['~/.rbenv/versions/mruby-1.4.1/bin/mrbc -E -B test test.rb',
+          [
+           "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
            "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
            './test'].each do |cmd|
              puts cmd

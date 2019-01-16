@@ -31,12 +31,15 @@ Or install it yourself as:
 
     $ gem install mrubyc-test
 
+
 ## Usage
 
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
 It means you have `.mrubycconfig` file in the top directory of your project.
 
 Besides, you have to locate mruby model files that are the target of testing like `mrblib/models/class_name.rb`
+
+And read [here](https://github.com/hasumikin/mrubyc-utils#wrapper-of-gem-mrubyc-test-and-mrubyc-debugger) about why you should use mrubyc-utils.
 
 This is an example of ESP32 project:
 
@@ -60,12 +63,12 @@ This is an example of ESP32 project:
 
 In the same directory:
 
-    $ mrubyc-test init
+    $ mrubyc-utils test init
 
 Then, some directories and files will be created in your project.
 Now you can run test because a sample test code was also created.
 
-    $ mrubyc-test test
+    $ mrubyc-utils test
 
 You should get some assertion faulures.
 Take a look at `test/sample_test.rb` to handle the failures and know how to write your own test.
@@ -131,7 +134,6 @@ end
 
 ## Known problems
 
-- `.ruby-version` should be set to a veriosn of CRuby to use mrubyc-test command although mruby/c developers want to set it like mruby-1.4.1
 - You have to write stub or mock test fot all the methods still do not exist otherwise your test won't turn green
 
 ## TODO (possibly)
