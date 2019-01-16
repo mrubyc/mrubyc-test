@@ -138,7 +138,6 @@ end
 
 ## TODO (possibly)
 
-- Better solution of coexistence of CRuby and mruby. May be a kind of wrapper tool or rbenv plugin?
 - Assertion against arguments of mock
 - Other assertions like LT(<), GTE(>=), include?, ...etc.
 - bla bla bla
