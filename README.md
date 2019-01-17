@@ -8,7 +8,8 @@ The API design and implementation of this gem is greatly inspired by [test-unit]
 
 ## Features
 
-- Tests are applicable to mruby code. C code will not be covered
+- Tests are applicable to class and its instance methods written with mruby
+- C code will not be covered directly though, you can test your C implementation if you write mruby wrapper class. In this case, your test class (it also written with mruby) will test an integrated circumstance of C and mruby
 - Tests will run on your PC (POSIX) hereby you can write *business logic* with mruby/c apart from C API matters like microcontroler peripherals
 - Simple assertions ... enough for almost firmware development though, I will increase the number of assertion
 - Stub ... You can write your mruby code without peripheral implementation by C
