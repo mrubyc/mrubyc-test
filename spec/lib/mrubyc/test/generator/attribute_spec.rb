@@ -14,20 +14,20 @@ RSpec.describe Mrubyc::Test::Generator::Attribute do
 
   it "does not raise error" do
     expect{ Mrubyc::Test::Generator::Attribute.run(
-      model_file: model_file,
-      test_file: test_file
+      model_files: [model_file],
+      test_files: [test_file]
     ) }.to_not raise_error
   end
 
   it "does not raise error without model_file" do
     expect{ Mrubyc::Test::Generator::Attribute.run(
-      test_file: test_file
+      test_files: [test_file]
     ) }.to_not raise_error
   end
 
   it "raises error if test_file is not passed" do
     expect{ Mrubyc::Test::Generator::Attribute.run(
-      model_file: model_file
+      model_files: [model_file]
     ) }.to raise_error(ArgumentError)
   end
 
