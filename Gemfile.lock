@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mrubyc-test (0.1.0)
+    mrubyc-test (0.2.0)
       activesupport (~> 5.2)
       rufo (~> 0.4)
       thor (~> 0.20)
