@@ -56,7 +56,7 @@ This is an example of ESP32 project:
 │      └── models               # Place your model class files here
 │            ├── class_name.rb  # The testing target `ClassName`
 │            └── my_class.rb    # The testing target `MyClass`
-│      └── tasks
+│      └── loops
 │            ├── main.rb        # Loop script isn't covered by mrubyc-test. use mrubyc-debugger
 │            └── sub.rb         # Loop script isn't covered by mrubyc-test. use mrubyc-debugger
 └── sdkconfig
