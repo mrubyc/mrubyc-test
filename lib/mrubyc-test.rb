@@ -86,9 +86,9 @@ module Mrubyc::Test
       make
     end
 
-    desc "--version, -v", "print the version"
-    def __print_version
-      puts Mrubyc::Test::Version
+    desc "version", "print the version"
+    def version
+      puts "mrubyc-test v#{Mrubyc::Test::VERSION}"
     end
 
   end
