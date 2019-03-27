@@ -36,7 +36,7 @@ Or install it yourself as:
 ## Usage
 
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
-It means you have `.mrubycconfig` file in the top directory of your project.
+It means you have `.mrubycconfig` and `.ruby-version` in the top directory of your project.
 
 Besides, you have to locate mruby model files that are the target of testing like `mrblib/models/class_name.rb`
 
@@ -47,7 +47,8 @@ This is an example of ESP32 project:
 ```
 ~/your_project $ tree
 .
-├── .mrubycconfig                # Created by mrubyc-utils
+├── .mrubycconfig               # Created by mrubyc-utils
+├── .ruby-version               # It should be mruby's version something like 'mruby-1.4.1'
 ├── Makefile
 ├── build
 ├── components
@@ -71,8 +72,8 @@ Now you can run test because a sample test code was also created.
 
     $ mrubyc-utils test
 
-You should get some assertion faulures.
-Take a look at `test/sample_test.rb` to handle the failures and know how to write your own test.
+You should get some assertion failures.
+Take a look at `test/sample_test.rb` to handle the failures and find how to write your own test.
 
 ### Asserions
 
