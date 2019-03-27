@@ -11,7 +11,14 @@ module Mrubyc
             # get information from model files(application code)
             model_files.each do |model_file|
               load model_file
-              model_class = Module.const_get(File.basename(model_file, '.rb').camelize)
+              class_name = File.basename(model_file, '.rb').camelize
+              begin
+                model_class = Module.const_get(class_name)
+              rescue NameError => e
+                print "\e[33;1m"
+                puts "Could not find class named `#{class_name}`. The file #{model_file} will be ignored"
+                print "\e[m"
+              end
               model_class.class_eval do
                 def method_missing(_method_name, *_args)
                   # do nothing
