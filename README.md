@@ -13,7 +13,7 @@ The API design and implementation of this gem is greatly inspired by [test-unit]
 - Tests will run on your PC (POSIX) hereby you can write *business logic* with mruby/c apart from C API matters like microcontroler peripherals
 - Simple assertions ... enough for almost firmware development though, I will increase the number of assertion
 - Stub ... You can write your mruby code without peripheral implementation by C
-- Mock ... You can call any method sill doesn't exist
+- Mock ... You can call any method still doesn't exist
 - The implementation of your application and test code will be analyzed by CRuby program, then comlpiled into mruby byte code and executed on mruby/c VM
 
 ## Installation
@@ -36,7 +36,7 @@ Or install it yourself as:
 ## Usage
 
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
-It means you have `.mrubycconfig` file in the top directory of your project.
+It means you have `.mrubycconfig` and `.ruby-version` in the top directory of your project.
 
 Besides, you have to locate mruby model files that are the target of testing like `mrblib/models/class_name.rb`
 
@@ -47,7 +47,8 @@ This is an example of ESP32 project:
 ```
 ~/your_project $ tree
 .
-├── .mrubycconfig                # Created by mrubyc-utils
+├── .mrubycconfig               # Created by mrubyc-utils
+├── .ruby-version               # It should be mruby's version something like 'mruby-1.4.1'
 ├── Makefile
 ├── build
 ├── components
@@ -71,8 +72,8 @@ Now you can run test because a sample test code was also created.
 
     $ mrubyc-utils test
 
-You should get some assertion faulures.
-Take a look at `test/sample_test.rb` to handle the failures and know how to write your own test.
+You should get some assertion failures.
+Take a look at `test/sample_test.rb` to handle the failures and find how to write your own test.
 
 ### Asserions
 
