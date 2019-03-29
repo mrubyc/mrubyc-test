@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe Mrubyc::Test::Generator::Attribute do
+
   after :each do
     SampleTest.send(:init_class_variables)
   end

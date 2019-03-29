@@ -34,18 +34,47 @@ class MrubycTestCase
       print $colors[:failure] + '.' + $colors[:reset]
     end
   end
+
   def assert_equal(expected, actual, message = nil)
     assertion = :assert_equal
     actual == expected ? success(assertion, expected, actual) : failure(assertion, expected, actual, message)
   end
+
   def assert_not_equal(expected, actual, message = nil)
     assertion = :assert_not_equal
     actual != expected ? success(assertion, expected, actual) : failure(assertion, expected, actual, message)
   end
+
   def assert_not_nil(expression, message = nil)
     assertion = :assert_not_nil
     expression != nil ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
   end
+
+  def assert(expression, message = nil)
+    assertion = :assert
+    expression ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+  end
+
+  def assert_true(expression, message = nil)
+    assertion = :assert_true
+    expression === true ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+  end
+
+  def assert_false(expression, message = nil)
+    assertion = :assert_true
+    expression === false ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+  end
+
+  def assert_in_delta(expected, actual, message = nil, delta = 0.001)
+    assertion = :assert_in_delta
+    dt = actual - expected
+    if -delta <= dt && dt <= delta
+      success(assertion, expected, actual)
+    else
+      failure(assertion, expected, actual, message)
+    end
+  end
+
   def self.description(text)
   end
   def self.desc(text)
@@ -68,5 +97,3 @@ class MrubycTestCase
     end
   end
 end
-
-
