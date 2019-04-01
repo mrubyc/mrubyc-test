@@ -66,8 +66,11 @@ module Mrubyc::Test
         FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         Dir.chdir(tmp_dir) do
           [
+           "ls -l",
            "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
-           "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -lm -DMRBC_USE_MATH=1",
+           "ls -l",
+           "cc -Wl,--no-as-needed -lm -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -DMRBC_USE_MATH=1 -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
+           "ls -l",
            './test'].each do |cmd|
              puts cmd
              puts
