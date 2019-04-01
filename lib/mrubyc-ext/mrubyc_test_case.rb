@@ -28,7 +28,7 @@ class MrubycTestCase
       puts $colors[:failure] + '  description: ' + @information[:description].to_s
       puts $colors[:failure] + '  ' + message if message
       puts $colors[:failure] + '  assertion  : ' + assertion.to_s + $colors[:reset]
-      puts $colors[:failure] + '  expected   : ' + expected.to_ss + $colors[:reset]
+      puts $colors[:failure] + '  expected   : ' + expected.to_s + $colors[:reset]
       puts $colors[:failure] + '  actual     : ' + actual.to_ss + $colors[:reset]
     else
       print $colors[:failure] + '.' + $colors[:reset]
@@ -45,24 +45,29 @@ class MrubycTestCase
     actual != expected ? success(assertion, expected, actual) : failure(assertion, expected, actual, message)
   end
 
+  def assert_nil(expression, message = nil)
+    assertion = :assert_not_nil
+    expression == nil ? success(assertion, nil, expression) : failure(assertion, "nil", expression, message)
+  end
+
   def assert_not_nil(expression, message = nil)
     assertion = :assert_not_nil
-    expression != nil ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+    expression != nil ? success(assertion, nil, expression) : failure(assertion, "!nil", expression, message)
   end
 
   def assert(expression, message = nil)
     assertion = :assert
-    expression ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+    expression ? success(assertion, nil, expression) : failure(assertion, "!nil && !false", expression, message)
   end
 
   def assert_true(expression, message = nil)
     assertion = :assert_true
-    expression === true ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+    expression == true ? success(assertion, nil, expression) : failure(assertion, "true", expression, message)
   end
 
   def assert_false(expression, message = nil)
     assertion = :assert_false
-    expression === false ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
+    expression == false ? success(assertion, nil, expression) : failure(assertion, "false", expression, message)
   end
 
   def assert_in_delta(expected, actual, message = nil, delta = 0.001)
