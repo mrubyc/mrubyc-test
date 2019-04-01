@@ -69,7 +69,7 @@ module Mrubyc::Test
            "ls -l",
            "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
            "ls -l",
-           "gcc-5 -Wl,--no-as-needed -lm -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -DMRBC_USE_MATH=1 -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
+           "cc -std=gnu99 -Wl,--no-as-needed -lm -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -DMRBC_USE_MATH=1 -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
            "ls -l",
            './test'].each do |cmd|
              puts cmd
