@@ -22,10 +22,14 @@ module Mrubyc::Test
     end
 
     desc 'prepare', 'Create a ruby script that has all the requirements of your test'
-    def prepare
+    def prepare(testfilepath = "")
       config = Mrubyc::Test::Config.read
       model_files = Dir.glob(File.join(Dir.pwd, config['mruby_lib_dir'], 'models', '*.rb'))
-      test_path = File.join(Dir.pwd, config['test_dir'], '*.rb')
+      test_path = if testfilepath == ""
+        File.join(Dir.pwd, config['test_dir'], "*.rb")
+      else
+        File.join(Dir.pwd, testfilepath)
+      end
       test_files = Dir.glob(test_path)
       if test_files.size == 0
         puts 'Test not found'
@@ -63,7 +67,7 @@ module Mrubyc::Test
         Dir.chdir(tmp_dir) do
           [
            "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
-           "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -lm",
+           "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -lm -DMRBC_USE_MATH=1",
            './test'].each do |cmd|
              puts cmd
              puts
@@ -81,8 +85,9 @@ module Mrubyc::Test
     end
 
     desc 'test', 'shortcut for `prepare` && `make`'
-    def test
-      prepare
+    def test(testfilepath = "test/*.rb")
+    pp testfilepath
+      prepare(testfilepath)
       make
     end
 
