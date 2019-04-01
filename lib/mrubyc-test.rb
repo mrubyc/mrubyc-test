@@ -63,7 +63,7 @@ module Mrubyc::Test
         Dir.chdir(tmp_dir) do
           [
            "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
-           "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
+           "cc -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -lm",
            './test'].each do |cmd|
              puts cmd
              puts
