@@ -61,7 +61,7 @@ class MrubycTestCase
   end
 
   def assert_false(expression, message = nil)
-    assertion = :assert_true
+    assertion = :assert_false
     expression === false ? success(assertion, nil, expression) : failure(assertion, nil, expression, message)
   end
 
