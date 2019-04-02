@@ -58,11 +58,6 @@ module Mrubyc
 
           puts
           puts "\e[32mWelcome to mrubyc-test, the world\'s first TDD tool for mruby/c microcontroller development.\e[0m"
-          puts "\e[33m"
-          puts 'Note:'
-          puts 'It is recommended to use mrubyc-utils as a wrapper of this gem'
-          puts 'see https://github.com/hasumikin/mrubyc-utils#wrapper-of-gem-mrubyc-test-and-mrubyc-debugger'
-          puts "\e[0m"
         end
       end
     end

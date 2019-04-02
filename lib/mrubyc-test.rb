@@ -94,5 +94,14 @@ module Mrubyc::Test
       puts "mrubyc-test v#{Mrubyc::Test::VERSION}"
     end
 
+    def help
+      super
+      puts "\e[33m"
+      puts '  Note:'
+      puts '  It is recommended to use mrubyc-utils as a wrapper of this gem'
+      puts '  see https://github.com/hasumikin/mrubyc-utils#wrapper-of-gem-mrubyc-test-and-mrubyc-debugger'
+      puts "\e[0m"
+    end
+
   end
 end
