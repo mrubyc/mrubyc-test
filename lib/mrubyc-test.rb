@@ -49,6 +49,8 @@ module Mrubyc::Test
 
     desc 'make', 'compile test script into executable && run it'
     def make
+      ENV["CFLAGS"] ||= "-std=gnu99 -DMRBC_DEBUG -DMRBC_USE_MATH=1 -Wall"
+      ENV["LDFLAGS"] ||= "-Wl,--no-as-needed -lm"
       config = Mrubyc::Test::Config.read
       tmp_dir = File.join(Dir.pwd, config['test_tmp_dir'])
       puts "cd #{tmp_dir}"
@@ -57,8 +59,8 @@ module Mrubyc::Test
       pwd = Dir.pwd
       mruby_version = File.read('.ruby-version').gsub("\n", '').chomp
       unless mruby_version.index('mruby')
-        puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use https://github.com/hasumikin/mrubyc-utils v0.0.6+`'
-        print 'Version name of mruby [mruby-x.x.x]: '
+        puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use the latest version of https://github.com/hasumikin/mrubyc-utils`'
+        print 'You can specify the version name of mruby [mruby-x.x.x]: '
         mruby_version = STDIN.gets.chomp
       end
       FileUtils.mv "#{pwd}/#{config['mrubyc_src_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
@@ -66,30 +68,23 @@ module Mrubyc::Test
         FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         Dir.chdir(tmp_dir) do
           [
-           "ls -l",
            "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
-           "ls -l",
-           "cc -std=gnu99 -Wl,--no-as-needed -lm -I #{pwd}/#{config['mrubyc_src_dir']} -DMRBC_DEBUG -DMRBC_USE_MATH=1 -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
-           "ls -l",
-           './test'].each do |cmd|
+           "cc #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]} -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
+           "./test"].each do |cmd|
              puts cmd
              puts
              exit_code = system(cmd) ? 0 : 1
+             exit(exit_code) if exit_code > 0
            end
-          puts
-          puts "cd -"
-          puts
         end
       ensure
         FileUtils.rm "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         FileUtils.mv "#{pwd}/#{config['mrubyc_src_dir']}/~hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
       end
-      exit(exit_code)
     end
 
     desc 'test', 'shortcut for `prepare` && `make`'
     def test(testfilepath = "test/*.rb")
-    pp testfilepath
       prepare(testfilepath)
       make
     end
