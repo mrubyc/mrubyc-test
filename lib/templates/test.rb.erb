@@ -114,7 +114,7 @@ end
   puts
   $current_class_and_method = "<%= test_case[:information][:test_class_name] %>#<%= test_case[:information][:method_name] %>"
   puts $current_class_and_method
-  my_case = <%= test_case[:information][:test_class_name] %>.new(information)
+  my_case = <%= test_case[:information][:test_class_name] %>.new(information, <%= verbose.to_s %>)
   my_case.setup
   my_case.<%= test_case[:information][:method_name] %>
   <% if test_case[:mocks] -%>

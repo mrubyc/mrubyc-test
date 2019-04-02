@@ -1,9 +1,9 @@
 class MrubycTestCase
-  def initialize(information)
+  def initialize(information, verbose = true)
     @information = information
     $mock ||= Mock.new
-    @puts_success_message = !true
-    @puts_failure_message = !true
+    @puts_success_message = verbose
+    @puts_failure_message = verbose
   end
 
   def success(assertion, expected, actual)

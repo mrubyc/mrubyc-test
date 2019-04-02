@@ -8,7 +8,7 @@ module Mrubyc
     module Generator
       class Script
         class << self
-          def run(model_files: [], test_files:, test_cases:)
+          def run(model_files: [], test_files:, test_cases:, verbose:)
             config = Mrubyc::Test::Config.read
             erb = ERB.new(File.read(File.expand_path('../../../../templates/test.rb.erb', __FILE__)), nil, '-')
             mrubyc_class_dir = File.expand_path('../../../../mrubyc-ext/', __FILE__)
