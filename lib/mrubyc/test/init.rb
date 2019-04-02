@@ -23,6 +23,20 @@ module Mrubyc
           puts "  mikdir -p #{hal_dir}"
           FileUtils.mkdir_p(hal_dir)
 
+          puts "  write #{config['test_tmp_dir']}/.gitignore"
+          File.open("#{config['test_tmp_dir']}/.gitignore", "w") do |f|
+            f.puts "test"
+            f.puts "test.rb"
+            f.puts "test.c"
+          end
+
+          if config["cruby_version"]
+            puts "  write #{config['test_tmp_dir']}/.ruby-version"
+            File.open("#{config['test_tmp_dir']}/.ruby-version", "w") do |f|
+              f.puts config["cruby_version"]
+            end
+          end
+
           Dir.chdir(hal_dir) do
             puts "  download from https://raw.githubusercontent.com/mrubyc/mrubyc/master/src/hal_posix/hal.h"
             system 'wget https://raw.githubusercontent.com/mrubyc/mrubyc/master/src/hal_posix/hal.h'
