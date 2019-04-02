@@ -41,14 +41,13 @@ class MrubycTestCase
       (@@added_method_names[self] ||= {}).keys
     end
 
-    private
+    def init_class_variables
+      @@description_locations = {}
+      @@method_locations = {}
+      @@added_method_names = {}
+    end
 
-      # for RSpec
-      def init_class_variables
-        @@description_locations = {}
-        @@method_locations = {}
-        @@added_method_names = {}
-      end
+    private
 
       def method_locations
         @@method_locations[self] ||= []

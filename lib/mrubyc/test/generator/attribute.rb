@@ -29,6 +29,7 @@ module Mrubyc
             method_locations = {}
             description_locations = {}
             double_method_locations = {}
+            MrubycTestCase.init_class_variables
             test_files.each do |test_file|
               load test_file
               test_class = Module.const_get(File.basename(test_file, '.rb').camelize)
