@@ -26,20 +26,37 @@ else
 end
 debugprint(RUBY_DESCRIPTION)
 $success_count = 0
-$failure_count = 0
+$failures = Array.new
 $colors = {
   reset: "\e[0m",
   success: "\e[32m",
-  failure: "\e[31m"
+  failure: "\e[31m",
+  info: "\e[36m"
 }
 def summerize
-  puts 'Finished'
-  print ($failure_count > 0) ? $colors[:failure] : $colors[:success]
-  print ($success_count + $failure_count).to_s + ' examples, '
-  print $failure_count.to_s + ' failures'
+  failure_count = $failures.count
+  if failure_count > 0
+    puts "Failures:\n"
+    $failures.each_with_index do |failure, index|
+      puts
+      puts "#{index+1}) " + failure[:class_and_method] + " (:" + failure[:assertion] + ")"
+      print $colors[:failure]
+      puts "  description : " + failure[:description]
+      puts "    " + failure[:message] if failure[:message]
+      puts "  expected    : " + failure[:expected]
+      puts "  actual      : " + failure[:actual]
+      print $colors[:info]
+      puts "  # " + failure[:path] + ":" + failure[:line]
+      print $colors[:reset]
+    end
+  end
+  puts "\nFinished\n"
+  print (failure_count > 0) ? $colors[:failure] : $colors[:success]
+  print ($success_count + failure_count).to_s + ' examples, '
+  print failure_count.to_s + ' failures'
   print $colors[:reset]
   puts
-  ($failure_count > 0) ? 1 : 0
+  (failure_count > 0) ? 1 : 0
 end
 
 <% %w(object hash mock mrubyc_test_case).each do |basename| -%>
@@ -94,6 +111,9 @@ end
     <% end -%>
   <% end -%>
   information = <%= test_case[:information].to_s %>
+  puts
+  $current_class_and_method = "<%= test_case[:information][:test_class_name] %>#<%= test_case[:information][:method_name] %>"
+  puts $current_class_and_method
   my_case = <%= test_case[:information][:test_class_name] %>.new(information)
   my_case.setup
   my_case.<%= test_case[:information][:method_name] %>
@@ -101,6 +121,7 @@ end
     my_case.check_mock
   <% end -%>
   my_case.teardown
+  puts
 
 <% end -%>
 

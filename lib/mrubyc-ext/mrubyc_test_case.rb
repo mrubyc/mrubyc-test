@@ -2,34 +2,31 @@ class MrubycTestCase
   def initialize(information)
     @information = information
     $mock ||= Mock.new
-    @puts_success_message = true
-    @puts_failure_message = true
+    @puts_success_message = !true
+    @puts_failure_message = !true
   end
-  def puts_information
-    puts
-    puts @information[:test_class_name] + '#' + @information[:method_name]
-  end
+
   def success(assertion, expected, actual)
-    puts_information
     $success_count += 1
     if @puts_success_message
-      puts $colors[:success] + '  assertion : ' + assertion.to_s + $colors[:reset]
-      puts $colors[:success] + '  result    : ' + actual.to_ss + $colors[:reset]
+      puts $colors[:success] + '  ' + actual.to_ss + " (:" + assertion.to_s + ")" + $colors[:reset]
     else
       print $colors[:success] + '.' + $colors[:reset]
     end
   end
   def failure(assertion, expected, actual, message)
-    puts_information
-    $failure_count += 1
+    $failures << {
+      class_and_method: $current_class_and_method,
+      path: @information[:path].to_s,
+      line: @information[:line].to_s,
+      description: @information[:description].to_s,
+      message: message,
+      assertion: assertion.to_s,
+      expected: expected.to_s,
+      actual: actual.to_ss
+    }
     if @puts_failure_message
-      puts $colors[:failure] + '  path       : ' + @information[:path].to_s
-      puts $colors[:failure] + '  line       : ' + @information[:line].to_s
-      puts $colors[:failure] + '  description: ' + @information[:description].to_s
-      puts $colors[:failure] + '  ' + message if message
-      puts $colors[:failure] + '  assertion  : ' + assertion.to_s + $colors[:reset]
-      puts $colors[:failure] + '  expected   : ' + expected.to_s + $colors[:reset]
-      puts $colors[:failure] + '  actual     : ' + actual.to_ss + $colors[:reset]
+      puts $colors[:failure] + '  ' + actual.to_ss + " (:" + assertion.to_s + ")" + $colors[:reset]
     else
       print $colors[:failure] + '.' + $colors[:reset]
     end
