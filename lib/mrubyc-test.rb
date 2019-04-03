@@ -77,8 +77,8 @@ module Mrubyc::Test
     end
 
     desc 'test', '[Default command] Execute test. You can specify a test file like `mrubyc-test test test/array_test.rb`'
-    option :every, type: :numeric, default: 10, aliases: :e, banner: "To avoid Out of Memory, test will be devided up to every specified number of xxx_test.rb files"
-    option :verbose, type: :boolean, default: true, aliases: :v, banner: "Show test result verbosely"
+    option :every, type: :numeric, default: 10, aliases: "-e", banner: "To avoid Out of Memory, test will be devided up to every specified number of xxx_test.rb files"
+    option :verbose, type: :boolean, default: false, aliases: "-v", banner: "Show test result verbosely"
     def test(testfilepath = "test/*.rb")
       init_env
       test_path = if testfilepath == ""
