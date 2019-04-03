@@ -22,7 +22,7 @@ module Mrubyc::Test
     end
 
     no_commands do
-      def prepare(test_files, verbose)
+      def prepare(test_files, verbose, method_name_pattern)
         config = Mrubyc::Test::Config.read
         model_files = Dir.glob(File.join(Dir.pwd, config['mruby_lib_dir'], 'models', '*.rb'))
 
@@ -33,7 +33,7 @@ module Mrubyc::Test
         test_cases = Mrubyc::Test::Generator::TestCase.run(attributes)
 
         # generate a ruby script that will be compiled by mrbc and executed in mruby/c VM
-        Mrubyc::Test::Generator::Script.run(model_files: model_files, test_files: test_files, test_cases: test_cases, verbose: verbose)
+        Mrubyc::Test::Generator::Script.run(model_files: model_files, test_files: test_files, test_cases: test_cases, verbose: verbose, method_name_pattern: method_name_pattern)
       end
 
       def make
@@ -77,17 +77,19 @@ module Mrubyc::Test
     end
 
     desc 'test', '[Default command] Execute test. You can specify a test file like `mrubyc-test test test/array_test.rb`'
-    option :every, type: :numeric, default: 10, aliases: "-e", banner: "To avoid Out of Memory, test will be devided up to every specified number of xxx_test.rb files"
-    option :verbose, type: :boolean, default: false, aliases: "-v", banner: "Show test result verbosely"
+    option :every, type: :numeric, default: 10, aliases: "-e", banner: "NUMBER - To avoid Out of Memory, test will be devided up to every specified NUMBER of xxx_test.rb files"
+    option :verbose, type: :boolean, default: false, aliases: "-v", banner: "[true/false] - Show test result verbosely"
+    option :name, type: :string, aliases: "-n", banner: "NAME - Specify the NAME of tests you want to run. If you write --name='/PATTERN/', it will be processed as a regular expression. It must be single-quoted and doubled-backslash. eg) --name='/a\\\\db/' will create Regexp object `/a\\db/` and match strings like `a1b`"
     def test(testfilepath = "test/*.rb")
       init_env
+      method_name_pattern = (%r{\A/(.*)/\Z} =~ options[:name] ? Regexp.new($1) : options[:name])
       test_path = if testfilepath == ""
         File.join(Dir.pwd, config['test_dir'], "*.rb")
       else
         File.join(Dir.pwd, testfilepath)
       end
       Dir.glob(test_path).each_slice(options[:every]) do |test_files|
-        prepare(test_files, options[:verbose])
+        prepare(test_files, options[:verbose], method_name_pattern)
         make
       end
     end
