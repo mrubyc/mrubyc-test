@@ -15,8 +15,8 @@ module Mrubyc
               begin
                 model_class = Module.const_get(class_name)
               rescue NameError => e
-                print "\e[33;1m"
-                puts "Could not find class named `#{class_name}`. The file #{model_file} will be ignored"
+                print "\e[33m"
+                puts "[WARN] #{model_file} doesn't have corresponding class `#{class_name}`."
                 print "\e[m"
               end
               model_class.class_eval do
