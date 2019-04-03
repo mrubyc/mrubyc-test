@@ -27,15 +27,28 @@ end
 debugprint(RUBY_DESCRIPTION)
 $success_count = 0
 $failures = Array.new
+$pendings = Array.new
 $colors = {
   reset: "\e[0m",
   success: "\e[32m",
   failure: "\e[31m",
+  pending: "\e[33m",
   info: "\e[36m"
 }
 def summerize
   failure_count = $failures.count
-  if failure_count > 0
+  pending_count = $pendings.count
+  if pending_count > 0
+    puts "Pendings:\n"
+    $pendings.each_with_index do |pending, index|
+      puts $colors[:pending]
+      puts "#{index+1}) " + pending[:class_and_method]
+      print $colors[:info]
+      puts "  # " + pending[:path] + ":" + pending[:line]
+      puts $colors[:reset]
+    end
+  end
+  color = if failure_count > 0
     puts "Failures:\n"
     $failures.each_with_index do |failure, index|
       puts
@@ -49,12 +62,18 @@ def summerize
       puts "  # " + failure[:path] + ":" + failure[:line]
       print $colors[:reset]
     end
+    $colors[:failure]
+  elsif pending_count > 0
+    $colors[:pending]
+  else
+    $colors[:success]
   end
   puts "\nFinished\n"
-  print (failure_count > 0) ? $colors[:failure] : $colors[:success]
+  print color
   print ($success_count + failure_count).to_s + ' examples, '
-  print failure_count.to_s + ' failures'
-  print $colors[:reset]
+  print failure_count.to_s + ' failures, '
+  print pending_count.to_s + ' (or more) pendings'
+  puts $colors[:reset]
   puts
   (failure_count > 0) ? 1 : 0
 end
@@ -68,7 +87,7 @@ end
 <% end -%>
 
 <% test_files.each do |file_name| -%>
-  <%= File.read(file_name) %>
+  <%= File.read(file_name).gsub(/(\bpend\b)/, '\1;return') -%>
 <% end -%>
 
 <% test_cases.each do |test_case| -%>

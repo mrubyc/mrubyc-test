@@ -32,6 +32,15 @@ class MrubycTestCase
     end
   end
 
+  def pend
+    $pendings << {
+      class_and_method: $current_class_and_method,
+      path: @information[:path].to_s,
+      line: @information[:line].to_s,
+    }
+    print $colors[:pending] + '.' + $colors[:reset]
+  end
+
   def assert_equal(expected, actual, message = nil)
     assertion = :assert_equal
     actual == expected ? success(assertion, expected, actual) : failure(assertion, expected, actual, message)
