@@ -67,7 +67,7 @@ module Mrubyc::Test
           end
         ensure
           FileUtils.rm hal_path
-          FileUtils.mv(hal_bal_path, hal_path) if FileTest.exist?(hal_bak_path)
+          FileUtils.mv(hal_bak_path, hal_path) if FileTest.exist?(hal_bak_path)
         end
       end
 
