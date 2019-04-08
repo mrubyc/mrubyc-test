@@ -49,7 +49,9 @@ module Mrubyc::Test
           print 'You can specify the version name of mruby [mruby-x.x.x]: '
           mruby_version = STDIN.gets.chomp
         end
-        FileUtils.mv "#{pwd}/#{config['mrubyc_src_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
+        hal_path = "#{pwd}/#{config['mrubyc_src_dir']}/hal"
+        hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
+        FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         begin
           FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
@@ -64,8 +66,8 @@ module Mrubyc::Test
              end
           end
         ensure
-          FileUtils.rm "#{pwd}/#{config['mrubyc_src_dir']}/hal"
-          FileUtils.mv "#{pwd}/#{config['mrubyc_src_dir']}/~hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
+          FileUtils.rm hal_path
+          FileUtils.mv(hal_bal_path, hal_path) if FileTest.exist?(hal_bak_path)
         end
       end
 
