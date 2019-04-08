@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{Test Framework for mruby/c}
   spec.description   = %q{mrubyc-test is an unit test framework for mruby/c, supporting basic assertions, stub and mock.}
   spec.homepage      = "https://github.com/mrubyc/mrubyc-test"
-  spec.license       = "MIT"
+  spec.license       = "BSD-3-Clause"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
