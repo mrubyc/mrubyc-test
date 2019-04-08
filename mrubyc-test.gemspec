@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = %q{Test Framework for mruby/c}
   spec.description   = %q{mrubyc-test is an unit test framework for mruby/c, supporting basic assertions, stub and mock.}
-  spec.homepage      = "https://github.com/hasumikin/mrubyc-test"
+  spec.homepage      = "https://github.com/mrubyc/mrubyc-test"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
