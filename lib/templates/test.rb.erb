@@ -14,6 +14,7 @@ if RUBY_VERSION == '1.9' && MRUBYC_VERSION
   end
   RUBY_DESCRIPTION = 'mruby/c ' + MRUBYC_VERSION
 else
+  require_relative "./models.rb"
   require 'objspace'
   def debugprint(message)
     puts
@@ -80,10 +81,6 @@ end
 
 <% %w(object hash mock mrubyc_test_case).each do |basename| -%>
   <%= File.read(File.join(mrubyc_class_dir, basename + '.rb')) %>
-<% end -%>
-
-<% model_files.each do |file_name| -%>
-  <%= File.read(file_name) %>
 <% end -%>
 
 <% test_files.each do |file_name| -%>

@@ -1,6 +1,6 @@
 # mrubyc-test
 
-[![Build Status](https://travis-ci.com/hasumikin/mrubyc-test.svg?branch=master)](https://travis-ci.com/hasumikin/mrubyc-test)
+[![Build Status](https://travis-ci.com/mrubyc/mrubyc-test.svg?branch=master)](https://travis-ci.com/mrubyc/mrubyc-test)
 
 mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 

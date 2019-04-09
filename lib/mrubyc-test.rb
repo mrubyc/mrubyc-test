@@ -57,6 +57,7 @@ module Mrubyc::Test
           Dir.chdir(tmp_dir) do
             [
              "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
+             "RBENV_VERSION=#{mruby_version} mrbc -E -B models models.rb",
              "cc #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]} -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
              "./test"].each do |cmd|
                puts cmd
