@@ -92,11 +92,9 @@ Assuming you have a model file at `mrblib/models/sample.rb`
 
 ```ruby
 class Sample
-  def do_something
-    attr_accessor :result
-    def do_something(arg)
-      @result = arg + still_not_defined_method
-    end
+  attr_accessor :result
+  def do_something(arg)
+    @result = arg + still_not_defined_method
   end
 end
 ```
