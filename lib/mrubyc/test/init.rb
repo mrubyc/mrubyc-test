@@ -26,6 +26,8 @@ module Mrubyc
           puts "  write #{config['test_tmp_dir']}/.gitignore"
           File.open("#{config['test_tmp_dir']}/.gitignore", "w") do |f|
             f.puts "test"
+            f.puts "models.rb"
+            f.puts "models.c"
             f.puts "test.rb"
             f.puts "test.c"
           end
