@@ -63,8 +63,13 @@ module Mrubyc::Test
                puts cmd
                puts
                exit_code = system(cmd) ? 0 : 1
-               exit(exit_code) if exit_code > 0
-             end
+               if exit_code > 0
+                 print "\e[31m"
+                 puts "exit code: #{exit_code}"
+                 puts "\e[0m"
+                 exit(exit_code)
+               end
+            end
           end
         ensure
           FileUtils.rm hal_path
