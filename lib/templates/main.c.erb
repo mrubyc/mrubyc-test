@@ -1,6 +1,7 @@
 #include "mrubyc.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "models.c"
 #include "test.c"
 
 #define MEMORY_SIZE (1024*64)-1
@@ -33,6 +34,7 @@ int main(void) {
   mrbc_init(my_memory_pool, MEMORY_SIZE);
   mrbc_define_method(0, mrbc_class_object, "debugprint", c_debugprint);
   mrbc_define_method(0, mrbc_class_object, "exit", c_exit);
+  mrbc_create_task( models, 0 );
   mrbc_create_task( test, 0 );
   mrbc_run();
   return exit_code;
