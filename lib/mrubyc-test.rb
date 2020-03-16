@@ -72,8 +72,8 @@ module Mrubyc::Test
       end
 
       def init_env
-        ENV["CFLAGS"] ||= "-std=gnu99 -DMRBC_DEBUG -DMRBC_USE_MATH=1 -Wall"
-        ENV["LDFLAGS"] ||= "-Wl,--no-as-needed -lm"
+        ENV["CFLAGS"] = "-std=gnu99 -DMRBC_DEBUG -DMRBC_USE_MATH=1 -Wall #{ENV["CFLAGS"]}"
+        ENV["LDFLAGS"] = "-Wl,--no-as-needed -lm #{ENV["LDFLAGS"]}"
       end
 
     end
