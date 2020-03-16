@@ -57,13 +57,19 @@ module Mrubyc::Test
           Dir.chdir(tmp_dir) do
             [
              "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
+             "RBENV_VERSION=#{mruby_version} mrbc -E -B models models.rb",
              "cc #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]} -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
              "./test"].each do |cmd|
                puts cmd
                puts
                exit_code = system(cmd) ? 0 : 1
-               exit(exit_code) if exit_code > 0
-             end
+               if exit_code > 0
+                 print "\e[31m"
+                 puts "exit code: #{exit_code}"
+                 puts "\e[0m"
+                 exit(exit_code)
+               end
+            end
           end
         ensure
           FileUtils.rm hal_path

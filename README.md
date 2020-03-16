@@ -1,6 +1,6 @@
 # mrubyc-test
 
-[![Build Status](https://travis-ci.com/hasumikin/mrubyc-test.svg?branch=master)](https://travis-ci.com/hasumikin/mrubyc-test)
+[![Build Status](https://travis-ci.com/mrubyc/mrubyc-test.svg?branch=master)](https://travis-ci.com/mrubyc/mrubyc-test)
 
 mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 
@@ -94,11 +94,9 @@ Assuming you have a model file at `mrblib/models/sample.rb`
 
 ```ruby
 class Sample
-  def do_something
-    attr_accessor :result
-    def do_something(arg)
-      @result = arg + still_not_defined_method
-    end
+  attr_accessor :result
+  def do_something(arg)
+    @result = arg + still_not_defined_method
   end
 end
 ```
