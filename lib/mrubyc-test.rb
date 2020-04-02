@@ -58,7 +58,7 @@ module Mrubyc::Test
             [
              "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
              "RBENV_VERSION=#{mruby_version} mrbc -E -B models models.rb",
-             "cc #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]} -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c",
+             "cc -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
              "./test"].each do |cmd|
                puts cmd
                puts
@@ -79,7 +79,7 @@ module Mrubyc::Test
 
       def init_env
         ENV["CFLAGS"] = "-std=gnu99 -Wall #{ENV["CFLAGS"]}"
-        ENV["LDFLAGS"] = "-Wl,--no-as-needed -lm #{ENV["LDFLAGS"]}"
+        ENV["LDFLAGS"] = "-lm #{ENV["LDFLAGS"]}"
       end
 
     end
