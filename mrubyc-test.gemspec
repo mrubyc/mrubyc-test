@@ -28,6 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.9"
 
   spec.add_dependency "thor", "~> 1.0"
-  spec.add_dependency "activesupport", "~> 5.2"
+  spec.add_dependency "activesupport", ">= 5.2", "< 7.0"
   spec.add_dependency "rufo", "~> 0.12"
 end
