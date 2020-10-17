@@ -25,30 +25,30 @@ module Mrubyc::Test
       def prepare(test_files, verbose, method_name_pattern)
         config = Mrubyc::Test::Config.read
         model_files = Dir.glob(File.join(Dir.pwd, config['mruby_lib_dir'], 'models', '*.rb'))
-
         # gather attributes from your implementations and tests
-        attributes = Mrubyc::Test::Generator::Attribute.run(model_files: model_files, test_files: test_files)
-
+        attributes = Mrubyc::Test::Generator::Attribute.run(
+          model_files: model_files,
+          test_files: test_files
+        )
         # convert attributes into tast_cases
         test_cases = Mrubyc::Test::Generator::TestCase.run(attributes)
-
         # generate a ruby script that will be compiled by mrbc and executed in mruby/c VM
-        Mrubyc::Test::Generator::Script.run(model_files: model_files, test_files: test_files, test_cases: test_cases, verbose: verbose, method_name_pattern: method_name_pattern)
+        Mrubyc::Test::Generator::Script.run(
+          model_files: model_files,
+          test_files: test_files,
+          test_cases: test_cases,
+          verbose: verbose,
+          method_name_pattern: method_name_pattern
+        )
       end
 
-      def make
+      def make(mrbc_path)
         config = Mrubyc::Test::Config.read
         tmp_dir = File.join(Dir.pwd, config['test_tmp_dir'])
         puts "cd #{tmp_dir}"
         puts
         exit_code = 0
         pwd = Dir.pwd
-        mruby_version = File.read('.ruby-version').gsub("\n", '').chomp
-        unless mruby_version.index('mruby')
-          puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use the latest version of https://github.com/hasumikin/mrubyc-utils`'
-          print 'You can specify the version name of mruby [mruby-x.x.x]: '
-          mruby_version = STDIN.gets.chomp
-        end
         hal_path = "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
@@ -56,8 +56,8 @@ module Mrubyc::Test
           FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
             [
-             "RBENV_VERSION=#{mruby_version} mrbc -E -B test test.rb",
-             "RBENV_VERSION=#{mruby_version} mrbc -E -B models models.rb",
+             "#{mrbc_path} -E -B test test.rb",
+             "#{mrbc_path} -E -B models models.rb",
              "cc -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
              "./test"].each do |cmd|
                puts cmd
@@ -84,10 +84,35 @@ module Mrubyc::Test
 
     end
 
-    desc 'test', '[Default command] Execute test. You can specify a test file like `mrubyc-test test test/array_test.rb`'
-    option :every, type: :numeric, default: 10, aliases: "-e", banner: "NUMBER - To avoid Out of Memory, test will be devided up to every specified NUMBER of xxx_test.rb files"
-    option :verbose, type: :boolean, default: false, aliases: "-v", banner: "[true/false] - Show test result verbosely"
-    option :name, type: :string, aliases: "-n", banner: "NAME - Specify the NAME of tests you want to run. If you write --name='/PATTERN/', it will be processed as a regular expression. It must be single-quoted and doubled-backslash. eg) --name='/a\\\\db/' will create Regexp object `/a\\db/` and match strings like `a1b`"
+    desc 'test', <<~DESC
+      [Default command]
+      Execute test. You can specify a test file like
+      `mrubyc-test test test/array_test.rb`'
+    DESC
+    option :every, type: :numeric, default: 10, aliases: "-e",
+      banner: <<~DESC.chomp
+        NUMBER
+               To avoid Out of Memory, test will be devided up to
+               every specified NUMBER of xxx_test.rb files
+      DESC
+    option :verbose, type: :boolean, default: false, aliases: "-v",
+      banner: "[true/false] - Show test result verbosely"
+    option :name, type: :string, aliases: "-n",
+      banner: <<~DESC.chomp
+        NAME
+               Specify the NAME of tests you want to run. If you
+               write --name='/PATTERN/', it will be processed as a regular
+               expression. It must be single-quoted and doubled-backslash.
+               eg) --name='/a\\\\db/' will create Regexp object `/a\\db/`
+                   and match strings like `a1b`
+      DESC
+    option :mrbc_path, type: :string, aliases: "-p",
+      banner: <<~DESC.chomp
+        PATH
+               Specify the path to mrbc.
+               eg: /home/hoge/mruby/build/host/bin/mrbc
+               RBENV_VERSION will be ignored if you specify this option.
+      DESC
     def test(testfilepath = "test/*.rb")
       init_env
       method_name_pattern = (%r{\A/(.*)/\Z} =~ options[:name] ? Regexp.new($1) : options[:name])
@@ -96,9 +121,20 @@ module Mrubyc::Test
       else
         File.join(Dir.pwd, testfilepath)
       end
+      mrbc_path = if options[:mrbc_path]
+        options[:mrbc_path]
+      else
+        mruby_version = File.read('.ruby-version').gsub("\n", '').chomp
+        unless mruby_version.index('mruby')
+          puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use the latest version of https://github.com/hasumikin/mrubyc-utils`'
+          print 'You can specify the version name of mruby [mruby-x.x.x]: '
+          mruby_version = STDIN.gets.chomp
+        end
+        "RBENV_VERSION=#{mruby_version} mrbc"
+      end
       Dir.glob(test_path).each_slice(options[:every]) do |test_files|
         prepare(test_files, options[:verbose], method_name_pattern)
-        make
+        make(mrbc_path)
       end
     end
 
