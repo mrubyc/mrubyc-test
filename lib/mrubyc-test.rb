@@ -58,7 +58,7 @@ module Mrubyc::Test
             [
              "#{mrbc_path} -E -B test test.rb",
              "#{mrbc_path} -E -B models models.rb",
-             "cc -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+             "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
              "./test"].each do |cmd|
                puts cmd
                puts
