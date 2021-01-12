@@ -10,6 +10,7 @@ module Mrubyc
           def run(model_files: [], test_files:)
             # get information from model files(application code)
             model_files.each do |model_file|
+              puts "loading #{model_file}"
               load model_file
               class_name = File.basename(model_file, '.rb').camelize
               begin
@@ -18,6 +19,7 @@ module Mrubyc
                 print "\e[33m"
                 puts "[WARN] #{model_file} doesn't have corresponding class `#{class_name}`."
                 print "\e[m"
+                next
               end
               model_class.class_eval do
                 def method_missing(_method_name, *_args)
