@@ -4,9 +4,9 @@
 
 mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 
-## Acknowledgements
+## Dependency
 
-The API design and implementation of this gem is greatly inspired by [test-unit](https://github.com/test-unit/test-unit). Thank the great work.
+- mrubyc-test 0.7.0+ depends on mrubyc 3.0+
 
 ## Features
 
@@ -38,7 +38,7 @@ Or install it yourself as:
 ## Usage
 
 Assuming you are using [mrubyc-utils](https://github.com/hasumikin/mrubyc-utils) to manage your project and [rbenv](https://github.com/rbenv/rbenv) to manage Ruby versions.
-It means you have `.mrubycconfig` and `.ruby-version` in the top directory of your project.
+It means you have `Mrubycfile` and `.ruby-version` in the top directory of your project.
 
 Besides, you have to locate mruby model files that are the target of testing like `mrblib/models/class_name.rb`
 
@@ -49,8 +49,8 @@ This is an example of ESP32 project:
 ```
 ~/your_project $ tree
 .
-├── .mrubycconfig               # Created by mrubyc-utils
-├── .ruby-version               # It should be mruby's version something like 'mruby-1.4.1'
+├── Mrubycfile                # Created by mrubyc-utils
+├── .ruby-version             # It should be mruby's version like 'mruby-3.0.0'
 ├── Makefile
 ├── build
 ├── components
@@ -143,6 +143,10 @@ end
 - Assertion against arguments of mock
 - Other assertions like LT(<), GTE(>=), include?, ...etc.
 - bla bla bla
+
+## Acknowledgements
+
+The API design and implementation of this gem is greatly inspired by [test-unit](https://github.com/test-unit/test-unit). Thank the great work.
 
 ## Contributing
 

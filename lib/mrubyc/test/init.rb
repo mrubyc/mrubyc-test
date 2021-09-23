@@ -11,12 +11,12 @@ module Mrubyc
           puts 'Initializing...'
           puts
 
-          puts '  touch .mrubycconfig'
+          puts '  touch Mrubycfile'
           config = Mrubyc::Test::Config.read(check: false)
           config['test_dir'] = 'test'
           config['test_tmp_dir'] = 'test/tmp'
           config['mruby_lib_dir'] = 'mrblib'
-          puts '  add config to .mrubycconfig'
+          puts '  add config to Mrubycfile'
           Mrubyc::Test::Config.write(config)
 
           hal_dir = "#{config['test_tmp_dir']}/hal"

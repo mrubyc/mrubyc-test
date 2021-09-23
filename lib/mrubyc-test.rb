@@ -56,9 +56,9 @@ module Mrubyc::Test
           FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
             [
-             "#{mrbc_path} -E -B test test.rb",
-             "#{mrbc_path} -E -B models models.rb",
-             "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+             "#{mrbc_path} -B test test.rb",
+             "#{mrbc_path} -B models models.rb",
+             "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
              "./test"].each do |cmd|
                puts cmd
                puts
@@ -115,15 +115,15 @@ module Mrubyc::Test
       DESC
     def test(testfilepath = "test/*.rb")
       init_env
+      config = Mrubyc::Test::Config.read
       method_name_pattern = (%r{\A/(.*)/\Z} =~ options[:name] ? Regexp.new($1) : options[:name])
       test_path = if testfilepath == ""
         File.join(Dir.pwd, config['test_dir'], "*.rb")
       else
         File.join(Dir.pwd, testfilepath)
       end
-      mrbc_path = if options[:mrbc_path]
-        options[:mrbc_path]
-      else
+      mrbc_path = options[:mrbc_path] || config['mrbc_path']
+      unless mrbc_path
         mruby_version = File.read('.ruby-version').gsub("\n", '').chomp
         unless mruby_version.index('mruby')
           puts '.ruby-version doesn\'t set `mruby-x.x.x It is recommended to use the latest version of https://github.com/hasumikin/mrubyc-utils`'
