@@ -7,7 +7,7 @@
 # For more information, see <%= Gem.loaded_specs['mrubyc-test']&.homepage %>
 #
 
-if RUBY_VERSION == '1.9' && MRUBYC_VERSION
+if RUBY_ENGINE == 'mruby/c'
   class Math
   end
   class Numeric

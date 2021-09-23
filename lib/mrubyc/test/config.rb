@@ -8,19 +8,29 @@ module Mrubyc
     class Config
       class << self
         def read(check: true)
-          FileUtils.touch('.mrubycconfig')
-          config = YAML.load_file('.mrubycconfig')
+          config = YAML.load_file(mrubycfile)
           if check
             if !config || config == [] || !config['test_dir']
-              raise 'Check if `.mrubycconfig` exists.'
+              raise 'Check if `Mrubycfile or .mrubycconfig` exists.'
             end
           end
           config || {}
         end
 
         def write(config)
-          File.open('.mrubycconfig', 'r+') do |file|
+          File.open(mrubycfile, 'r+') do |file|
             file.write(config.to_yaml)
+          end
+        end
+
+        def mrubycfile
+          if File.exists? 'Mrubycfile'
+            'Mrubycfile'
+          elsif  File.exists? '.mrubycconfig'
+            '.mrubycconfig'
+          else
+            FileUtils.touch 'Mrubycfile'
+            'Mrubycfile'
           end
         end
       end

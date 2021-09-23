@@ -86,9 +86,9 @@ class MrubycTestCase
     end
   end
 
-  def self.description(text)
+  def description(text)
   end
-  def self.desc(text)
+  def desc(text)
   end
   def setup
   end
