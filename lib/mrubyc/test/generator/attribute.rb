@@ -13,9 +13,12 @@ module Mrubyc
               puts "loading #{model_file}"
               load model_file
               class_name = File.basename(model_file, '.rb').camelize
-              begin
-                model_class = Module.const_get(class_name)
-              rescue NameError => e
+              model_class = if Module.const_defined?(class_name)
+                Module.const_get(class_name)
+              elsif Module.const_defined?(class_name.upcase)
+                Module.const_get(class_name.upcase)
+              end
+              unless model_class
                 print "\e[33m"
                 puts "[WARN] #{model_file} doesn't have corresponding class `#{class_name}`."
                 print "\e[m"
