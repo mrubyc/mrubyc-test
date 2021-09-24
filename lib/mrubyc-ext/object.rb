@@ -16,8 +16,8 @@ class Object
       'Array'
     when FalseClass
       'FalseClass'
-    when Fixnum
-      'Fixnum'
+    when Integer
+      'Integer'
     when Float
       'Float'
     when Hash
