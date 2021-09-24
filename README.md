@@ -119,17 +119,17 @@ end
 ```ruby
 class Sample
   def do_other_thing
-    is_to_be_hit()
+    is_to_be_hit(1, 2) # Two args for example
   end
 end
 ```
 
-You can test whether `#is_to_be_hit` method will be called:
+You can test whether `#is_to_be_hit(v1, v2)` method will be called:
 
 ```ruby
 def mock_case
   sample_obj = Sample.new
-  mock(sample_obj).is_to_be_hit
+  mock(sample_obj).is_to_be_hit(2) # `2` should be count of parameters
   sample_obj.do_other_thing
 end
 ```

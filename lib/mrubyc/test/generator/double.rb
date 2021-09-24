@@ -17,11 +17,13 @@ module Mrubyc
         end
 
         def method_missing(method_name, *args)
+          param_size = args[0] || 0
           @@double_method_locations << {
             type: @type,
             class: @klass,
             method_name: method_name,
             args: args.to_s,
+            method_parameters: Array.new(param_size).map.with_index{|_, i| ('a'.ord + i).chr }.join(','),
             block: (block_given? ? yield : nil),
             label: @location.label,
             path: @location.absolute_path || @location.path,

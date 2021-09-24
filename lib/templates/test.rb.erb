@@ -108,7 +108,7 @@ end
   <% end -%>
   <% test_case[:mocks].each do |mock| -%>
     class <%= mock[:class_name] %>
-      def <%= mock[:method_name] %>
+      def <%= mock[:method_name] %>(<%= mock[:method_parameters] %>)
         $mock.actual.add_by_key :<%= mock[:method_name] %>
       end
     end
@@ -126,7 +126,7 @@ end
     end
     <% test_case[:mocks].each do |mock| -%>
       class <%= mock[:class_name] %>Double
-        def <%= mock[:method_name] %>
+        def <%= mock[:method_name] %>(_param_size = 0)
           $mock.expected.add_by_key :<%= mock[:method_name] %>
         end
       end

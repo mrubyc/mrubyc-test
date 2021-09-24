@@ -31,6 +31,7 @@ module Mrubyc
                         instance_variables: nil, # TODO
                         method_name: double[:method_name].to_s,
                         args: double[:args],
+                        method_parameters: double[:method_parameters],
                         return_value: double[:block],
                         line: double[:line]
                       }
