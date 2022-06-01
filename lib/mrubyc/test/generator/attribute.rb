@@ -19,9 +19,10 @@ module Mrubyc
                 Module.const_get(class_name.upcase)
               end
               unless model_class
-                print "\e[33m"
-                puts "[WARN] #{model_file} doesn't have corresponding class `#{class_name}`."
-                print "\e[m"
+                # Deprecate 2022-06-01
+                #print "\e[33m"
+                #puts "[WARN] #{model_file} doesn't have corresponding class `#{class_name}`."
+                #print "\e[m"
                 next
               end
               model_class.class_eval do
