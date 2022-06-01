@@ -47,34 +47,30 @@ module Mrubyc::Test
         tmp_dir = File.join(Dir.pwd, config['test_tmp_dir'])
         puts "cd #{tmp_dir}"
         puts
-        exit_code = 0
         pwd = Dir.pwd
         hal_path = "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
+        exit_code = 0
         begin
           FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
             [
-             "#{mrbc_path} -B test test.rb",
-             "#{mrbc_path} -B models models.rb",
-             "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
-             "./test"].each do |cmd|
+              "#{mrbc_path} -B test test.rb",
+              "#{mrbc_path} -B models models.rb",
+              "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+              "./test"
+             ].each do |cmd|
                puts cmd
                puts
-               exit_code = system(cmd) ? 0 : 1
-               if exit_code > 0
-                 print "\e[31m"
-                 puts "exit code: #{exit_code}"
-                 puts "\e[0m"
-                 exit(exit_code)
-               end
+               exit_code = 1 unless system(cmd)
             end
           end
         ensure
           FileUtils.rm hal_path
           FileUtils.mv(hal_bak_path, hal_path) if FileTest.exist?(hal_bak_path)
         end
+        return exit_code
       end
 
       def init_env
@@ -132,10 +128,16 @@ module Mrubyc::Test
         end
         "RBENV_VERSION=#{mruby_version} mrbc"
       end
+      exit_code = 0
       Dir.glob(test_path).each_slice(options[:every]) do |test_files|
         prepare(test_files, options[:verbose], method_name_pattern)
-        make(mrbc_path)
+        exit_code += make(mrbc_path)
       end
+      if exit_code > 0
+        puts "\e[31mFinished with error(s)\e[0m"
+        exit 1
+      end
+      puts "\e[32mFinished without error\e[0m"
     end
 
     desc "version", "Print the version"

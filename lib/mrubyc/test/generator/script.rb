@@ -13,12 +13,12 @@ module Mrubyc
             test_erb = ERB.new(
               File.read(
                 File.expand_path('../../../../templates/test.rb.erb', __FILE__)
-              ), nil, '-'
+              ), trim_mode: '-'
             )
             models_erb = ERB.new(
               File.read(
                 File.expand_path('../../../../templates/models.rb.erb', __FILE__)
-              ), nil, '-'
+              ), trim_mode: '-'
             )
             mrubyc_class_dir = File.expand_path('../../../../mrubyc-ext/', __FILE__)
             File.write(File.join(
