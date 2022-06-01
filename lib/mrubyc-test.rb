@@ -52,14 +52,16 @@ module Mrubyc::Test
         hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         exit_code = 0
+        cc = ENV['CC'].length > 0 ? ENV['CC'] : "gcc"
+        qemu = ENV['QEMU']
         begin
           FileUtils.ln_sf "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
             [
               "#{mrbc_path} -B test test.rb",
               "#{mrbc_path} -B models models.rb",
-              "cc -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
-              "./test"
+              "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+              "#{qemu} ./test"
              ].each do |cmd|
                puts cmd
                puts
