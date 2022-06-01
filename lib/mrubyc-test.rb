@@ -53,7 +53,7 @@ module Mrubyc::Test
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         exit_code = 0
         begin
-          FileUtils.ln_s "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
+          FileUtils.ln_sf "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
           Dir.chdir(tmp_dir) do
             [
               "#{mrbc_path} -B test test.rb",
