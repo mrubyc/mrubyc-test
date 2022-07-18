@@ -52,7 +52,7 @@ module Mrubyc::Test
         hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         exit_code = 0
-        cc = ENV['CC'].length > 0 ? ENV['CC'] : "gcc"
+        cc = ENV['CC'].to_s.length > 0 ? ENV['CC'] : "gcc"
         qemu = ENV['QEMU']
         begin
           FileUtils.ln_sf "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
