@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mrubyc-test (0.7.1)
+    mrubyc-test (0.7.4)
       activesupport (~> 7.0)
       rufo (~> 0.12)
       thor (~> 1.2)
@@ -9,16 +9,16 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (7.0.3)
+    activesupport (7.0.3.1)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
     concurrent-ruby (1.1.10)
     diff-lcs (1.5.0)
-    i18n (1.10.0)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    minitest (5.15.0)
+    minitest (5.16.2)
     rake (13.0.6)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
