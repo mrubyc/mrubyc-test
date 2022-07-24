@@ -54,12 +54,18 @@ module Mrubyc
           erb = ERB.new(File.read(File.expand_path('../../../templates/sample_test.rb.erb', __FILE__)), nil, '-')
           File.write(File.join(config['test_dir'], 'sample_test.rb'), erb.result(binding))
 
+          init_main_c
+
+          puts
+          puts "\e[32mWelcome to mrubyc-test, the world\'s first TDD tool for mruby/c microcontroller development.\e[0m"
+        end
+
+        def init_main_c
+          config = Mrubyc::Test::Config.read(check: false)
           puts '  cp test/tmp/main.c'
           erb = ERB.new(File.read(File.expand_path('../../../templates/main.c.erb', __FILE__)), nil, '-')
           File.write(File.join(config['test_tmp_dir'], 'main.c'), erb.result(binding))
 
-          puts
-          puts "\e[32mWelcome to mrubyc-test, the world\'s first TDD tool for mruby/c microcontroller development.\e[0m"
         end
       end
     end

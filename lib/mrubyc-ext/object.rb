@@ -4,6 +4,8 @@ class Object
       'nil [NilClass]'
     elsif self == ''
       '[NULL String]'
+    elsif self.class.to_s.end_with? "Error"
+      "#<#{self.class}: #{self.message}>"
     else
       self.to_s + ' [' + self.class_name + ']'
     end

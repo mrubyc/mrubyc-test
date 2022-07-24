@@ -50,6 +50,7 @@ module Mrubyc::Test
         pwd = Dir.pwd
         hal_path = "#{pwd}/#{config['mrubyc_src_dir']}/hal"
         hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
+        FileUtils.rm_rf hal_bak_path
         FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         exit_code = 0
         cc = ENV['CC'].to_s.length > 0 ? ENV['CC'] : "gcc"
@@ -60,12 +61,12 @@ module Mrubyc::Test
             [
               "#{mrbc_path} -B test test.rb",
               "#{mrbc_path} -B models models.rb",
-              "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+              "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=1000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
               "#{qemu} ./test"
-             ].each do |cmd|
-               puts cmd
-               puts
-               exit_code = 1 unless system(cmd)
+            ].each do |cmd|
+              puts cmd
+              puts
+              exit_code = 1 unless Kernel.system(cmd)
             end
           end
         ensure
@@ -112,6 +113,7 @@ module Mrubyc::Test
                RBENV_VERSION will be ignored if you specify this option.
       DESC
     def test(testfilepath = "test/*.rb")
+      Mrubyc::Test::Init.init_main_c
       init_env
       config = Mrubyc::Test::Config.read
       method_name_pattern = (%r{\A/(.*)/\Z} =~ options[:name] ? Regexp.new($1) : options[:name])

@@ -14,7 +14,7 @@ class MrubycTestCase
       print $colors[:success] + '.' + $colors[:reset]
     end
   end
-  def failure(assertion, expected, actual, message)
+  def failure(assertion, expected, actual, message, error = nil)
     $failures << {
       class_and_method: $current_class_and_method,
       path: @information[:path].to_s,
@@ -23,7 +23,8 @@ class MrubycTestCase
       message: message,
       assertion: assertion.to_s,
       expected: expected.to_s,
-      actual: actual.to_ss
+      actual: actual.to_ss,
+      error: error
     }
     if @puts_failure_message
       puts $colors[:failure] + '  ' + actual.to_ss + " (:" + assertion.to_s + ")" + $colors[:reset]
@@ -39,6 +40,25 @@ class MrubycTestCase
       line: @information[:line].to_s,
     }
     print $colors[:pending] + '.' + $colors[:reset]
+  end
+
+  def assert_raise(*errors, &block)
+    assertion = :assert_raise
+    e = nil
+    begin
+      block.call
+    rescue => e
+      errors.each do |error|
+        if error == e.class || (error.class == e.class && error.message == e.message)
+          success(assertion, errors, error)
+          return
+        end
+      end
+    end
+    expected = errors.map {|error|
+      error.message.length > 0 ? "#<#{error.class}: #{error.message}>" : "#{error.class}"
+    }.join(" || ")
+    failure(assertion, expected, (e || "[No error]"), "")
   end
 
   def assert_equal(expected, actual, message = nil)
@@ -86,9 +106,9 @@ class MrubycTestCase
     end
   end
 
-  def description(text)
+  def self.description(text)
   end
-  def desc(text)
+  def self.desc(text)
   end
   def setup
   end

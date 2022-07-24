@@ -56,9 +56,10 @@ def summerize
       puts "#{index+1}) " + failure[:class_and_method] + " (:" + failure[:assertion] + ")"
       print $colors[:failure]
       puts "  description : " + failure[:description]
-      puts "    " + failure[:message] if failure[:message]
-      puts "  expected    : " + failure[:expected]
-      puts "  actual      : " + failure[:actual]
+      puts "  expected    : " + failure[:expected] if failure[:expected].length > 0
+      puts "  actual      : " + failure[:actual] if failure[:actual]
+      puts "  error       : " + failure[:error] if failure[:error]
+      puts "  message     : " + failure[:message] if failure[:message]
       print $colors[:info]
       puts "  # " + failure[:path] + ":" + failure[:line]
       print $colors[:reset]
@@ -136,13 +137,17 @@ end
   puts
   $current_class_and_method = "<%= test_case[:information][:test_class_name] %>#<%= test_case[:information][:method_name] %>"
   puts $current_class_and_method
-  my_case = <%= test_case[:information][:test_class_name] %>.new(information, <%= verbose.to_s %>)
-  my_case.setup
-  my_case.<%= test_case[:information][:method_name] %>
-  <% if test_case[:mocks] -%>
-    my_case.check_mock
-  <% end -%>
-  my_case.teardown
+  begin
+    my_case = <%= test_case[:information][:test_class_name] %>.new(information, <%= verbose.to_s %>)
+    my_case.setup
+    my_case.<%= test_case[:information][:method_name] %>
+    <% if test_case[:mocks] -%>
+      my_case.check_mock
+    <% end -%>
+    my_case.teardown
+  rescue => e
+    my_case.failure(nil, nil, "", e.message, e.class.to_s)
+  end
   puts
 
 <% end -%>

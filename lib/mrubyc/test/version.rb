@@ -1,5 +1,5 @@
 module Mrubyc
   module Test
-    VERSION = "0.7.4"
+    VERSION = "0.8.0"
   end
 end

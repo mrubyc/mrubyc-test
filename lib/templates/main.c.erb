@@ -1,6 +1,7 @@
 #include "mrubyc.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "models.c"
 #include "test.c"
 
@@ -9,15 +10,28 @@ static uint8_t my_memory_pool[MEMORY_SIZE];
 
 int exit_code = 0;
 
-static void c_exit(struct VM *vm, mrbc_value v[], int argc)
+static void
+c_exit(struct VM *vm, mrbc_value v[], int argc)
 {
   exit_code = GET_INT_ARG(1);
 }
 
 //================================================================
+/*! Object#require
+ *  (for PRK Firmware)
+*/
+static void
+c_require(struct VM *vm, mrbc_value v[], int argc)
+{
+  /* Nothing to do */
+  SET_NIL_RETURN();
+}
+
+//================================================================
 /*! Object#instance_variable_get
 */
-static void c_instance_variable_get(struct VM *vm, mrbc_value v[], int argc)
+static void
+c_instance_variable_get(struct VM *vm, mrbc_value v[], int argc)
 {
   mrbc_kv_handle *kvh = &v[0].instance->ivar;
   const char *name = (const char *)GET_STRING_ARG(1);
@@ -34,7 +48,8 @@ static void c_instance_variable_get(struct VM *vm, mrbc_value v[], int argc)
 //================================================================
 /*! DEBUG PRINT
 */
-static void c_debugprint(struct VM *vm, mrbc_value v[], int argc)
+static void
+c_debugprint(struct VM *vm, mrbc_value v[], int argc)
 {
   console_putchar('\n');
   for( int i = 0; i < 79; i++ ) { console_putchar('='); }
@@ -50,13 +65,34 @@ static void c_debugprint(struct VM *vm, mrbc_value v[], int argc)
   console_putchar('\n');
 }
 
-int main(void) {
+bool
+mrbc_load_model(const uint8_t *mrb)
+{
+  mrbc_vm *vm = mrbc_vm_open(NULL);
+  if( vm == 0 ) {
+    console_printf("Error: Can't open VM.\n");
+    exit_code++;
+    return false;
+  }
+  if( mrbc_load_mrb(vm, mrb) != 0 ) {
+    mrbc_print_exception(&vm->exception);
+    exit_code++;
+    return false;
+  }
+  mrbc_vm_begin(vm);
+  mrbc_vm_run(vm);
+  mrbc_raw_free(vm);
+  return true;
+}
+
+int
+main(void) {
   mrbc_init(my_memory_pool, MEMORY_SIZE);
+  mrbc_define_method(0, mrbc_class_object, "require", c_require);
   mrbc_define_method(0, mrbc_class_object, "debugprint", c_debugprint);
   mrbc_define_method(0, mrbc_class_object, "exit", c_exit);
   mrbc_define_method(0, mrbc_class_object, "instance_variable_get", c_instance_variable_get);
-  mrbc_create_task( models, 0 );
-  mrbc_create_task( test, 0 );
-  mrbc_run();
+  mrbc_load_model(models);
+  mrbc_load_model(test);
   return exit_code;
 }
