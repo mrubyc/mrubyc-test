@@ -43,7 +43,8 @@ def summerize
     puts "Pendings:\n"
     $pendings.each_with_index do |pending, index|
       puts $colors[:pending]
-      puts "#{index+1}) " + pending[:class_and_method]
+      print index # FIXME: picorbc's bug :thinking_face:
+      puts ") " + pending[:class_and_method]
       print $colors[:info]
       puts "  # " + pending[:path] + ":" + pending[:line]
       puts $colors[:reset]
@@ -53,7 +54,8 @@ def summerize
     puts "Failures:\n"
     $failures.each_with_index do |failure, index|
       puts
-      puts "#{index+1}) " + failure[:class_and_method] + " (:" + failure[:assertion] + ")"
+      print index # FIXME: picorbc's bug :thinking_face:
+      puts ") " + failure[:class_and_method] + " (:" + failure[:assertion] + ")"
       print $colors[:failure]
       puts "  description : " + failure[:description]
       puts "  expected    : " + failure[:expected] if failure[:expected].length > 0
