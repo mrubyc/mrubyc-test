@@ -94,5 +94,8 @@ main(void) {
   mrbc_define_method(0, mrbc_class_object, "instance_variable_get", c_instance_variable_get);
   mrbc_load_model(models);
   mrbc_load_model(test);
+  /* test should be a task so that methods like sleep work */
+  mrbc_create_task(test, 0);
+  mrbc_run();
   return exit_code;
 }
