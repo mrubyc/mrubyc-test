@@ -115,7 +115,7 @@ module Mrubyc::Test
                eg: /home/hoge/mruby/build/host/bin/mrbc
                RBENV_VERSION will be ignored if you specify this option.
       DESC
-    def test(testfilepath = "test/*.rb")
+    def test(testfilepath = "")
       Mrubyc::Test::Init.init_main_c
       init_env
       config = Mrubyc::Test::Config.read
