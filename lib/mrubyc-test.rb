@@ -66,7 +66,10 @@ module Mrubyc::Test
             ].each do |cmd|
               puts cmd
               puts
-              exit_code = 1 unless Kernel.system(cmd)
+              unless Kernel.system(cmd)
+                exit_code = 1
+                break
+              end
             end
           end
         ensure

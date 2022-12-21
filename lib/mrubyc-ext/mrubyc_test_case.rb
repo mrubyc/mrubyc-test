@@ -22,7 +22,7 @@ class MrubycTestCase
       description: @information[:description].to_s,
       message: message,
       assertion: assertion.to_s,
-      expected: expected.to_s,
+      expected: expected.to_ss,
       actual: actual.to_ss,
       error: error
     }

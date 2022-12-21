@@ -7,7 +7,7 @@ class Object
     elsif self.class.to_s.end_with? "Error"
       "#<#{self.class}: #{self.message}>"
     else
-      self.to_s + ' [' + self.class_name + ']'
+      self.inspect + ' [' + self.class_name + ']'
     end
   end
   def class_name
