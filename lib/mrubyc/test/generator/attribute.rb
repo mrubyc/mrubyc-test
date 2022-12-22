@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/string/inflections'
+require 'i18n/locale/fallbacks'
+require 'i18n/locale/tag/simple'
 
 module Mrubyc
   module Test
