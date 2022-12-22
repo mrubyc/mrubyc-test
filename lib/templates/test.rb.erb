@@ -85,7 +85,7 @@ end
 <% end -%>
 
 <% test_files.each do |file_name| -%>
-  <%= File.read(file_name).gsub(/(\bpend\b)/, '\1;return') -%>
+  <%= File.read(file_name) -%>
 <% end -%>
 
 <% test_cases.each do |test_case| -%>
