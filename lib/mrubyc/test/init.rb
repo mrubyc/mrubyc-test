@@ -63,7 +63,7 @@ module Mrubyc
         def init_main_c
           config = Mrubyc::Test::Config.read(check: false)
           puts '  cp test/tmp/main.c'
-          erb = ERB.new(File.read(File.expand_path('../../../templates/main.c.erb', __FILE__)), nil, '-')
+          erb = ERB.new(File.read(File.expand_path('../../../templates/main.c.erb', __FILE__)))
           File.write(File.join(config['test_tmp_dir'], 'main.c'), erb.result(binding))
 
         end
