@@ -12,7 +12,7 @@ module Mrubyc
 
         def initialize(type, object, location)
           @type = type
-          @klass = object.class
+          @klass = object.class == Class ? object : object.class
           @location = location
         end
 
