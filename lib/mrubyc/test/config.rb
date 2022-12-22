@@ -14,6 +14,13 @@ module Mrubyc
               raise 'Check if `Mrubycfile or .mrubycconfig` exists.'
             end
           end
+          if config && ENV['MRUBYCFILE']
+            config.each do |k, v|
+              if v && k != "mrbc_path"
+                config[k] = File.join File.dirname(ENV['MRUBYCFILE']), v
+              end
+            end
+          end
           config || {}
         end
 
@@ -24,9 +31,11 @@ module Mrubyc
         end
 
         def mrubycfile
-          if File.exists? 'Mrubycfile'
+          if ENV['MRUBYCFILE']
+            ENV['MRUBYCFILE']
+          elsif File.exists? 'Mrubycfile'
             'Mrubycfile'
-          elsif  File.exists? '.mrubycconfig'
+          elsif File.exists? '.mrubycconfig'
             '.mrubycconfig'
           else
             FileUtils.touch 'Mrubycfile'
