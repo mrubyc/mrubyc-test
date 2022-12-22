@@ -48,33 +48,23 @@ module Mrubyc::Test
         puts "cd #{tmp_dir}"
         puts
         pwd = Dir.pwd
-        hal_path = "#{pwd}/#{config['mrubyc_src_dir']}/hal"
-        hal_bak_path = "#{pwd}/#{config['mrubyc_src_dir']}/~hal"
-        FileUtils.rm_rf hal_bak_path
-        FileUtils.mv(hal_path, hal_bak_path) if FileTest.exist?(hal_path)
         exit_code = 0
         cc = ENV['CC'].to_s.length > 0 ? ENV['CC'] : "gcc"
         qemu = ENV['QEMU']
-        begin
-          FileUtils.ln_sf "#{pwd}/#{config['test_tmp_dir']}/hal", "#{pwd}/#{config['mrubyc_src_dir']}/hal"
-          Dir.chdir(tmp_dir) do
-            [
-              "#{mrbc_path} -B test test.rb",
-              "#{mrbc_path} -B models models.rb",
-              "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal/*.c -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=1000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
-              "#{qemu} ./test"
-            ].each do |cmd|
-              puts cmd
-              puts
-              unless Kernel.system(cmd)
-                exit_code = 1
-                break
-              end
+        Dir.chdir(tmp_dir) do
+          [
+            "#{mrbc_path} -B test test.rb",
+            "#{mrbc_path} -B models models.rb",
+            "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal_posix/*.c -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=1000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]} -Wl,--allow-multiple-definition",
+            "#{qemu} ./test"
+          ].each do |cmd|
+            puts cmd
+            puts
+            unless Kernel.system(cmd)
+              exit_code = 1
+              break
             end
           end
-        ensure
-          FileUtils.rm hal_path
-          FileUtils.mv(hal_bak_path, hal_path) if FileTest.exist?(hal_bak_path)
         end
         return exit_code
       end
