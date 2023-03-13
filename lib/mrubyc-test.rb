@@ -55,7 +55,7 @@ module Mrubyc::Test
           [
             "#{mrbc_path} -B test test.rb",
             "#{mrbc_path} -B models models.rb",
-            "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal_posix/*.c -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=1000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+            "#{cc} -O0 -g3 -Wall -I #{pwd}/#{config['mrubyc_src_dir']} -static -o test main.c #{pwd}/#{config['mrubyc_src_dir']}/*.c #{pwd}/#{config['mrubyc_src_dir']}/hal_posix/*.c -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=10000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
             "#{qemu} ./test"
           ].each do |cmd|
             puts cmd
