@@ -12,11 +12,11 @@ mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mr
 
 - Tests are applicable to class and its instance methods written with mruby
 - C code will not be covered directly though, you can test your C implementation if you write mruby wrapper class. In this case, your test class (it also written with mruby) will test an integrated circumstance of C and mruby
-- Tests will run on your PC (POSIX) hereby you can write *business logic* with mruby/c apart from C API matters like microcontroler peripherals
+- Tests will run on your PC (POSIX) hereby you can write *business logic* with mruby/c apart from C API matters like microcontroller peripherals
 - Simple assertions ... enough for almost firmware development though, I will increase the number of assertion
 - Stub ... You can write your mruby code without peripheral implementation by C
 - Mock ... You can call any method still doesn't exist
-- The implementation of your application and test code will be analyzed by CRuby program, then comlpiled into mruby byte code and executed on mruby/c VM
+- The implementation of your application and test code will be analyzed by CRuby program, then compiled into mruby byte code and executed on mruby/c VM
 
 ## Installation
 
@@ -77,7 +77,7 @@ Now you can run test because a sample test code was also created.
 You should get some assertion failures.
 Take a look at `test/sample_test.rb` to handle the failures and find how to write your own test.
 
-### Asserions
+### Assertions
 
 ```ruby
 def assertions
@@ -136,7 +136,7 @@ end
 
 ## Known problems
 
-- You have to write stub or mock test fot all the methods still do not exist otherwise your test won't turn green
+- You have to write stub or mock test for all the methods still do not exist otherwise your test won't turn green
 
 ## TODO (possibly)
 
