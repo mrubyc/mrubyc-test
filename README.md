@@ -1,7 +1,5 @@
 # mrubyc-test
 
-[![Build Status](https://travis-ci.org/mrubyc/mrubyc-test.svg?branch=master)](https://travis-ci.org/mrubyc/mrubyc-test)
-
 mrubyc-test is an unit test framework for [mruby/c](https://github.com/mrubyc/mrubyc), supporting basic assertions, stub and mock.
 
 ## Dependency
