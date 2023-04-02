@@ -84,7 +84,7 @@ module Mrubyc::Test
     option :every, type: :numeric, default: 10, aliases: "-e",
       banner: <<~DESC.chomp
         NUMBER
-               To avoid Out of Memory, test will be devided up to
+               To avoid Out of Memory, test will be divided up to
                every specified NUMBER of xxx_test.rb files
       DESC
     option :verbose, type: :boolean, default: false, aliases: "-v",

@@ -121,7 +121,7 @@ class MrubycTestCase
     $mock.expected.keys.each do |key|
       $mock.actual[key] = 0 unless $mock.actual[key]
       if $mock.expected[key] > $mock.actual[key]
-        failure(:mock, $mock.expected[key], $mock.actual[key], key.to_s + ' shoud have been called at least expected times')
+        failure(:mock, $mock.expected[key], $mock.actual[key], key.to_s + ' should have been called at least expected times')
       else
         success(:mock, $mock.expected[key], $mock.actual[key])
       end
