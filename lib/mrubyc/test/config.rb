@@ -33,9 +33,9 @@ module Mrubyc
         def mrubycfile
           if ENV['MRUBYCFILE']
             ENV['MRUBYCFILE']
-          elsif File.exists? 'Mrubycfile'
+          elsif File.exist? 'Mrubycfile'
             'Mrubycfile'
-          elsif File.exists? '.mrubycconfig'
+          elsif File.exist? '.mrubycconfig'
             '.mrubycconfig'
           else
             FileUtils.touch 'Mrubycfile'
