@@ -24,11 +24,17 @@ module Mrubyc
                 next
               end
               model_class.class_eval do
-                def method_missing(_method_name, *_args)
-                  # do nothing
-                end
-                def respond_to_missing?(_sym, _include_private)
-                  super
+                begin
+                  original_warn_method = Warning.method(:warn)
+                  Warning.singleton_class.define_method(:warn) { |message| }
+                  def method_missing(_method_name, *_args)
+                    # do nothing
+                  end
+                  def respond_to_missing?(_sym, _include_private)
+                    super
+                  end
+                ensure
+                  Warning.singleton_class.define_method(:warn, original_warn_method)
                 end
               end
             end
