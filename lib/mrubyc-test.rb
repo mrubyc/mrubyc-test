@@ -67,12 +67,14 @@ module Mrubyc::Test
             puts cmd
             puts
             stdout, stderr, status = Open3.capture3(cmd)
+            puts stdout
             if status.signaled?
               puts "Failed to execute the command: #{cmd}"
               p status
               exit 1
             end
             if status.exitstatus != 0
+              puts stderr
               exit_code = 1
               break
             end
