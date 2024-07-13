@@ -61,7 +61,7 @@ module Mrubyc::Test
             "#{cc} -O0 -g3 -Wall " +
               "-I #{mrubyc_src_dir} -I #{hal_dir} -static " +
               "-o test main.c #{mrubyc_src_dir}/*.c #{hal_dir}/*.c " +
-              "-DMRBC_INT64 -DMAX_SYMBOLS_COUNT=10000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
+              "-DMRBC_SUPPORT_OP_EXT -DMRBC_INT64 -DMAX_SYMBOLS_COUNT=10000 -DMRBC_USE_MATH=1 -DMRBC_USE_HAL_POSIX #{ENV["CFLAGS"]} #{ENV["LDFLAGS"]}",
             "#{qemu} ./test"
           ].each do |cmd|
             puts cmd
