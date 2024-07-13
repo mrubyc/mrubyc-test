@@ -9,6 +9,7 @@ require "mrubyc/test/generator/test_case"
 require "mrubyc/test/generator/script"
 require "mrubyc/test/generator/double"
 require "thor"
+require "open3"
 
 module Mrubyc::Test
   class Error < StandardError; end
@@ -65,7 +66,13 @@ module Mrubyc::Test
           ].each do |cmd|
             puts cmd
             puts
-            unless Kernel.system(cmd)
+            stdout, stderr, status = Open3.capture3(cmd)
+            if status.signaled?
+              puts "Failed to execute the command: #{cmd}"
+              p status
+              exit 1
+            end
+            if status.exitstatus != 0
               exit_code = 1
               break
             end
@@ -136,7 +143,7 @@ module Mrubyc::Test
         exit_code += make(mrbc_path)
       end
       if exit_code > 0
-        puts "\e[31mFinished with error(s)\e[0m"
+        puts "\e[31mFinished with error(s). exit code: #{exit_code}\e[0m"
         exit 1
       end
       puts "\e[32mFinished without error\e[0m"
